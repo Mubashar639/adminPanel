@@ -176,7 +176,7 @@ class EditCategory extends React.Component {
             </div>
             <div>
               <h3>  Select Security Leve </h3>
-              <Select style={{ width: "200px" }} onSelect={this.onSellect} name="sextype" defaultValue={this.state.securityLevel}>
+              <Select style={{ width: "200px" }} onSelect={this.onSellect} name="securityLevel" defaultValue={this.state.securityLevel}>
                 {this.state.securityvalues.map((item, key) => (
                   <Option value={item} key={key}>{item}</Option>
                 ))}

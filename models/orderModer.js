@@ -19,7 +19,7 @@ let sales_orderSchema = mongoose.Schema({
     },
     order:{
         type:String,
-        default:"processing",
+        default:"pending",
         enum:{
             values:["pending","completed","cancled","toCustomer"],
             message:"values must be processing, dispatched , delivered, or toCustomer"

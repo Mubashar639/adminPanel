@@ -43,7 +43,7 @@ class AppDetail extends React.Component {
   closeAppleModal = () => this.setState({ isAndroidModalOpen: false });
 
   componentDidMount() {
-    const app = AppsList.find(app => app.appName === "App A");
+    const app = AppsList.find(app => app.appName === "Mobile App Admin Panal");
     this.setState({
       app
     });
@@ -86,35 +86,6 @@ class AppDetail extends React.Component {
             }}
             span={6}
           >
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "flex-end",
-                alignItems: "center",
-                height: "58px",
-                paddingRight: "15px"
-              }}
-            >
-              <Menu mode="horizontal" selectable={false}>
-                <Menu.SubMenu
-                  title={
-                    <span className="submenu-title-wrapper">
-                      <Icon type="setting" />
-                      Publish
-                    </span>
-                  }
-                >
-                  <Menu.Item onClick={this.openAndroidModal}>
-                    <Icon type="android" />
-                    Android
-                  </Menu.Item>
-                  <Menu.Item onClick={this.openAppleModal}>
-                    <Icon type="apple" />
-                    IOS
-                  </Menu.Item>
-                </Menu.SubMenu>
-              </Menu>
-            </div>
           </Col>
         </Row>
         <Layout>

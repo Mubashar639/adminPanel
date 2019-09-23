@@ -20,7 +20,7 @@ orderRoute.post('/new', (req, res) => {
     })
 }) 
 
-orderRoute.post('/ChangeStatus', (req, res) => {
+orderRoute.patch('/ChangeStatus/:id', (req, res) => {
 
 
     controller.change(req, (err, order) => {
@@ -66,8 +66,8 @@ orderRoute.delete('/delete_all', (req, res) => {
 })
 
 
-orderRoute.delete('/delete', (req, res) => {
-
+orderRoute.delete('/delete/:id', (req, res) => {
+// console.log(req.params)
     controller.deleteOne(req, (err, result) => {
         if(err){
             res.json({err:err})

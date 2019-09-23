@@ -15,8 +15,8 @@ const orderController = {
           });
     },
     change: (data, cb) => {
-        OrderModel.findById(data.body._id, function (err, order) {
-            order.status = data.body.status
+        OrderModel.findByIdAndUpdate(data.params.id,{...data.body},{new:true}, function (err, order) {
+        
             cb(err, order)
 
         })
@@ -28,9 +28,10 @@ const orderController = {
         })
     },
     deleteOne: (data, cb) => {
-        OrderModel.findByIdAndUpdate(data.body._id, { deleted: true }, { new: true }, (err, order) => {
-
+        OrderModel.findByIdAndUpdate(data.params.id, { orderDelete: true ,order:"cancled" }, (err, order) => {
+            console.log(order)
             cb(err, order)
+
         })
     },
     update: (data, cb) => {

@@ -25,10 +25,10 @@ const Sidebar = props =>(
       <span className="nav-text"> Order </span>
     </Menu.Item>
     
-    <Menu.Item key="appOder">
+    {/* <Menu.Item key="appOder">
       <Icon type="bg-colors" />
       <span className="nav-text"> Order </span>
-    </Menu.Item>
+    </Menu.Item> */}
   </Menu>
 );
 

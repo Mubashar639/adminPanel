@@ -37,10 +37,10 @@ import {
     // dispatch(login_loading());
     const token = localStorage.getItem("token");
     baseUrl
-      .delete('api/order/' + creds, { headers: { "Authorization": `Bearer ${token}` } }
+      .delete('api/order/delete/' + creds, { headers: { "Authorization": `Bearer ${token}` } }
       )
       .then(res => {
-        if (res.status === 204) {
+        if (res.status === 200) {
           dispatch(order_remove(creds));
           console.log(res.data)
           message.success("successfully Deleted");
@@ -57,7 +57,7 @@ import {
     // dispatch(login_loading());
     const token = localStorage.getItem("token");
     baseUrl
-      .patch('api/order/' + id, 
+      .patch('api/order/ChangeStatus/' + id, 
       { ...creds },
        { headers: { "Authorization": `Bearer ${token}` } }
       )

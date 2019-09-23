@@ -110,7 +110,7 @@ componentDidMount(){
       <div>
         <Row>
           <Col span={24}>
-            <Typography.Title>My Facilties</Typography.Title>
+            <Typography.Title>My Transportation</Typography.Title>
           </Col>
           <Col>
             <Divider />

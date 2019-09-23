@@ -3,7 +3,7 @@ import axios from "axios";
 export const AppsList = [
   {
     _id: 1,
-    appName: "App A",
+    appName: "Mobile App Admin Panal",
     appUrl: "http://app-A.com",
     img: "/images/A.png",
     appFeatures: {

@@ -59,12 +59,17 @@ componentDidMount(){
     {
       key: "orderDelete",
       title: "orderDelete",
-      dataIndex: "orderDelete"
+      render: (text, record) => (
+        <span>
+          {record.orderDelete? 
+          <span>deleted</span>:<span>not deleted</span>}
+        </span>
+      ),
     },
     {
-      key: "orderUpdate",
-      title: "orderUpdate",
-      dataIndex: "orderUpdate"
+      key: "order",
+      title: "order",
+      dataIndex: "order"
     },
    
     {
@@ -106,17 +111,7 @@ componentDidMount(){
             <Divider />
           </Col>
         </Row>
-        <Row type="flex" justify="end">
-          <Col style={{ marginTop: "5px" }}>
-            <Button
-              onClick={this.openModal}
-              shape="circle"
-              size="large"
-              type="primary"
-              icon="plus"
-            />
-          </Col>
-        </Row>
+      
         <Row gutter={16}>
           <Col>
          {this.props.order ?  <Table
