@@ -22,10 +22,7 @@ const Tranportation = mongoose.Schema({
         },
         price:Number
     },
-    operationDays: {
-        type: Number,
-        default: 5
-    },
+    operationDays: [String],
     pickUpLocation: {
         // goeloction
         type:{

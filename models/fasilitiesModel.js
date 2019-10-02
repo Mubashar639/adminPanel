@@ -30,10 +30,7 @@ const Facility = mongoose.Schema({
             message:"sex Type must be male or female"
         }
     },
-    visitationDays:{
-        type:Number,
-        default:5
-    },
+    visitationDays:[String],
     visitTime:{
         type:Date,
         default:Date.now()

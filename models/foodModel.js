@@ -13,6 +13,14 @@ const productSchema = new Schema({
   image: {
     type: String,
     required: true
+  },
+  category: {
+    type: String,
+    required: true
+  },
+  subcategory: {
+    type: String,
+    required: true
   }
 });
 
