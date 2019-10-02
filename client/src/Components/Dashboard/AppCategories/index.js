@@ -1,5 +1,5 @@
 import React from "react";
-import { Row, Col, Typography, Button, Divider, Table } from "antd";
+import { Row, Col, Typography, Button, Divider, Table,Input } from "antd";
 import { CategoriesModel } from "../../../shared";
 import AddCategory from "./AddCategory";
 import EditCategory from "./EditCategory";
@@ -15,7 +15,8 @@ class AppCategories extends React.Component {
       isEditModalOpan: false,
       categoriesModel: new CategoriesModel(),
       categoryToEdit: {},
-      categories: []
+      filterfacilities: [],
+      facilities:[]
     };
   }
 componentDidMount(){
@@ -44,7 +45,32 @@ componentDidMount(){
   onRowClickHandler = (category)=>()=>{
     this.setState({ categoryToEdit: category, isEditModalOpan: true });
   }
+  componentDidUpdate(prevProps, prevState) {
+    // only update chart if the data has changed
+    if (prevProps.facility !== this.props.facility) {
+      this.setState({
+        facilities: this.props.facility.facilities,
+        filterfacilities:this.props.facility.facilities
+      }, () => console.log(this.state.transpors))
+    }
+  }
+  onChangePrice = (e) => {
+    let value = e.target.value
+    const transports= [...this.state.filterfacilities]
+    const array=[...transports]
+    const transport = array.filter((transport) => {
+      if (transport.name.includes(value)) {
+        return transport
+      }
+    })
 
+    if (value) {
+  
+      this.setState({ facilities: transport })
+    } else {
+      this.setState({ facilities: transports })
+    }
+  }
   tableColumns = [
     {
       key: "name",
@@ -53,27 +79,32 @@ componentDidMount(){
     },
     {
       key: "address",
-      title: "address",
+      title: "Address",
       dataIndex: "address"
     },
     {
       key: "securityLevel",
-      title: "securityLevel",
+      title: "Security Level",
       dataIndex: "securityLevel"
     },
     {
       key: "sexType",
-      title: "sexType",
+      title: "Sex Type",
       dataIndex: "sexType"
     },
     {
       key: "visitationDays",
-      title: "visitationDays",
-      dataIndex: "visitationDays"
+      title: "Visitation Days",
+      render: (text, record) =>{
+        return (
+        <span>
+          {record.visitationDays.map((value,index) => <a > {index+1+ " "+value+"  "} </a>)}
+        </span>)}
     },
+    
     {
       key: "visitTime",
-      title: "visitTime",
+      title: "Visit Time",
       dataIndex: "visitTime"
     },
      {
@@ -117,8 +148,10 @@ componentDidMount(){
         </Row>
         <Row gutter={16}>
           <Col>
+          <Input placeholder="Enter name for Search"
+              style={{ width: "300px" }} name="price"  onChange={this.onChangePrice} />
          {this.props.facility ?  <Table
-              dataSource={this.props.facility.facilities}
+              dataSource={this.state.facilities}
               pagination={false}
               columns={this.tableColumns}
               rowKey={record => record._id}

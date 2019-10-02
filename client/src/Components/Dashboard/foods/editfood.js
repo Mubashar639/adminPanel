@@ -18,7 +18,9 @@ class EditCategory extends React.Component {
       name: "",
       photo:"",
       price:"",
-      id:""
+      id:"",
+      category:"",
+      subcategory:""
     };
   }
 
@@ -31,6 +33,9 @@ class EditCategory extends React.Component {
         name: nextProps.category.name,
         price: nextProps.category.price,
         photo: nextProps.category.image,
+        category: nextProps.category.category,
+        subcategory: nextProps.category.subcategory,
+
         id: nextProps.category._id
       };
     }
@@ -60,6 +65,8 @@ class EditCategory extends React.Component {
       name: "",
       price: "",
       photo:"",
+      category:"",
+      subcategory:"",
       isModalInitialized: false
 
     });
@@ -92,7 +99,21 @@ class EditCategory extends React.Component {
           maskClosable={false}
           width="80%"
           onOk={this.onOkHandler}
-        >
+        > <div style={{
+          display: "flex", flexDirection: "row", alignItem: "center",
+          justifyContent: "space-around"
+        }}>
+          <div>
+            <h3> Category </h3>
+            <Input placeholder="Enter your Category name" name="category" value={this.state.category}
+              allowClear onChange={this.onChange} />
+          </div>
+          <div>
+            <h3> Sub Category </h3>
+            <Input placeholder="Enter your Sub Category " value={this.state.subcategory}
+              name="subcategory" allowClear onChange={this.onChange} />
+          </div>
+        </div>
            <div style={{
             display: "flex", flexDirection: "row", alignItem: "center",
             justifyContent: "space-around"

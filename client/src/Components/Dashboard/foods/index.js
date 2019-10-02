@@ -1,10 +1,12 @@
 import React from "react";
-import { Row, Col, Typography, Button, Divider, Table } from "antd";
+import { Row, Col, Typography, Button, Divider, Table ,Input} from "antd";
 import { CategoriesModel } from "../../../shared";
 import AddCategory from "./addfood";
 import EditCategory from "./editfood";
 import {connect} from "react-redux"
 import {Getfood,Deletefood} from "../../../Redux/Epics/food"
+import { Url } from "../../../shared";
+
 // import { deleteFacility } from "../../../../../../android3/android/servers/order server/controllers/ficilityController";
 
 class ApFood extends React.Component {
@@ -15,7 +17,9 @@ class ApFood extends React.Component {
       isEditModalOpan: false,
       categoriesModel: new CategoriesModel(),
       categoryToEdit: {},
-      categories: []
+      categories: [],
+      filterfoods:[],
+      food:[],
     };
   }
 componentDidMount(){
@@ -42,8 +46,35 @@ componentDidMount(){
 //   }else  return false
 // }
   onRowClickHandler = (category)=>()=>{
-    alert(category.image)
+  
     this.setState({ categoryToEdit: category, isEditModalOpan: true });
+  }
+ 
+  onChangePrice = (e) => {
+    let value = e.target.value
+    const transports= [...this.state.filterfoods]
+    const array=[...transports]
+    const transport = array.filter((transport) => {
+      if (transport.name.includes(value)) {
+        return transport
+      }
+    })
+
+    if (value) {
+  
+      this.setState({ foods: transport })
+    } else {
+      this.setState({ foods: transports })
+    }
+  }
+  componentDidUpdate(prevProps, prevState) {
+    // only update chart if the data has changed
+    if (prevProps.food !== this.props.food) {
+      this.setState({
+        foods: this.props.food.foods,
+        filterfoods:this.props.food.foods
+      })
+    }
   }
 
   tableColumns = [
@@ -54,15 +85,25 @@ componentDidMount(){
     },
     {
       key: "price",
-      title: "price",
+      title: "Price",
       dataIndex: "price"
     },
     {
-      title: 'image',
+      key: "category",
+      title: "Category",
+      dataIndex: "category"
+    },
+    {
+      key: "category",
+      title: "Sub Category",
+      dataIndex: "subcategory"
+    },
+    {
+      title: 'Image',
       key: 'image',
       render: (text, record) => (
         <span>
-          <img style={{width:"100px"}} src={`http://localhost:5000/uploads/${record.image}`}/>
+          <img style={{width:"100px"}} src={`${Url}/uploads/${record.image}`}/>
         </span>
       ),
     },
@@ -107,8 +148,10 @@ componentDidMount(){
         </Row>
         <Row gutter={16}>
           <Col>
+          <Input placeholder="Enter name for Search"
+              style={{ width: "300px" }} name="price"  onChange={this.onChangePrice} />
          {this.props.food ?  <Table
-              dataSource={this.props.food.foods}
+              dataSource={this.state.foods}
               pagination={false}
               columns={this.tableColumns}
               rowKey={record => record._id}

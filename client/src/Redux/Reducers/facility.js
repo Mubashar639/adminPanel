@@ -14,7 +14,10 @@ const Facility = (
     case actionTypes.FACILITY_FAILED:
       return { ...state, isLoading: false, errMess: action.errMess, user: null };
     case actionTypes.FACILITY_SUCCESS:
-      return { ...state, isLoading: false, errMess: null, facilities: action.facility };
+
+    const facilityName = action.facility.map((facilit) =>facilit.name)
+
+      return { ...state, isLoading: false, errMess: null, facilities: action.facility,facilityName};
     case actionTypes.FACILITY_ADD:
       {
         const facility = action.facility

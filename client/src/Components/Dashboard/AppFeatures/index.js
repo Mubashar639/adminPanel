@@ -1,6 +1,7 @@
 import React from "react";
 import { Row, Col, Typography, Button, Divider, Table } from "antd";
 import { CategoriesModel } from "../../../shared";
+import { Url } from "../../../shared";
 
 import EditCategory from "./editOder";
 import {connect} from "react-redux"
@@ -48,17 +49,17 @@ componentDidMount(){
   tableColumns = [
     {
       key: "orderNumber",
-      title: "orderNumber",
+      title: "Order Number",
       dataIndex: "orderNumber"
     },
     {
       key: "orderTrack",
-      title: "orderTrack",
+      title: "Order Track",
       dataIndex: "orderTrack"
     },
     {
       key: "orderDelete",
-      title: "orderDelete",
+      title: "Order Delete",
       render: (text, record) => (
         <span>
           {record.orderDelete? 
@@ -73,12 +74,12 @@ componentDidMount(){
     },
    
     {
-      title: 'orderDetail',
+      title: 'Order Detail',
       key: 'orderDetail',
       render: (text, record) => (<span style={{display:"flex",flexDirection:'row'}} >
       {record.orderDetail.map((value,index)=> <span >
         {console.log(value)}
-          <img style={{width:"50px"}} src={`http://localhost:5000/uploads/${value[0].image}`}/>
+          <img style={{width:"50px"}} src={`${Url}/uploads/${value[0].image}`}/>
           <div>{value[0].name}</div>
       </span>)}</span>
       ),
@@ -100,7 +101,7 @@ componentDidMount(){
   ];
 // facilities
   render() {
-    console.log(this.props.order)
+    // console.log(this.props.order)
     return (
       <div>
         <Row>

@@ -6,11 +6,13 @@ import {
   Modal,
   Input,
   Select,
-  DatePicker
+  DatePicker,Checkbox
 } from "antd";
+
 import { UpdateFacilities } from "../../../Redux/Epics/facilities";
 import { connect } from "react-redux"
 import moment from "moment"
+const CheckboxGroup = Checkbox.Group;
 
 const { Option } = Select
 class EditCategory extends React.Component {
@@ -24,7 +26,9 @@ class EditCategory extends React.Component {
       sexType: "male",
       securityLevel: "low",
       securityvalues: ["low", "medium", "mar"],
-      visitationDays: "",
+      day: ['Monday', 'Tuesday', 'Wendsday', 'Thursday', "Friday", 'SatureDay', "Sunday"],
+      
+      visitationDays:[], 
       visitTime: "",
       requirementForVisitation: ""
     };
@@ -88,7 +92,14 @@ class EditCategory extends React.Component {
     this.setState({ visitTime: value });
 
   }
-
+  selectedDays = visitationDays => {
+    this.setState({
+      visitationDays,
+      indeterminate: !!visitationDays.length && visitationDays.length < visitationDays.length,
+      checkAll: visitationDays.length === this.state.day.length,
+    });
+    // console.log(visitationDays)
+  };
   cancelHandler = () => {
     this.resetSate();
     this.props.closeEditModal();
@@ -143,10 +154,13 @@ class EditCategory extends React.Component {
               <Input placeholder="Enter your Phone"
                 name="phone" allowClear onChange={this.onChange} value={this.state.phone} />
             </div>
-            <div>
-              <h3>  visitation Days </h3>
-              <Input placeholder="Enter your facility visit days"
-                name="visitationDays" allowClear onChange={this.onChange} value={this.state.visitationDays} />
+            <div style={{width:"300px"}}>
+            <h3> Select you Visitation days </h3>
+              <CheckboxGroup
+                options={this.state.day}
+                value={this.state.visitationDays}
+                onChange={this.selectedDays}
+              />
             </div>
           </div>
           <div style={{

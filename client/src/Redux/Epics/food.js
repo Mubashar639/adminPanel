@@ -39,10 +39,14 @@ import {
     // dispatch(login_loading());
 
   const form = new FormData();
+
     form.append("name", creds.name);
+    form.append("category", creds.category);
+    form.append("subcategory", creds.subcategory);
+
     form.append("price",creds.price)
     form.append("photo",creds.photo)
-
+  
     const token = localStorage.getItem("token");
   
     baseUrl
@@ -92,8 +96,10 @@ import {
     // dispatch(login_loading());
     const form = new FormData();
     form.append("name", creds.name);
+    form.append("category", creds.category);
+    form.append("subcategory", creds.subcategory);
     form.append("price",creds.price)
-    form.append("photo",creds.photo)
+    if(creds.photo)form.append("photo",creds.photo)
     const token = localStorage.getItem("token");
     baseUrl
       .patch('api/food/' + id, 

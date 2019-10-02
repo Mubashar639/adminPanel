@@ -19,6 +19,8 @@ class EditCategory extends React.Component {
     this.state = {
       name: "",
       phone: "",
+      day: ['Monday', 'Tuesday', 'Wendsday', 'Thursday', "Friday", 'SatureDay', "Sunday"],
+
       facilities: [],
       ticketPrice: {
         type: "aldult",
@@ -63,12 +65,14 @@ class EditCategory extends React.Component {
       id: "",
       name: "",
       phone: "",
+      day: ['Monday', 'Tuesday', 'Wendsday', 'Thursday', "Friday", 'SatureDay', "Sunday"],
+
       facilities: [],
       ticketPrice: {
         type: "aldult",
         price: "",
       },
-      operationDays: "",
+      operationDays: [],
       pickUpLocation: {
         type: "",
         coordinates: [],
@@ -174,7 +178,7 @@ class EditCategory extends React.Component {
           type: "aldult",
           price: "",
         },
-        operationDays: "",
+        operationDays: [],
         pickUpLocation: {
           type: "",
           coordinates: [],
@@ -187,7 +191,14 @@ class EditCategory extends React.Component {
         isModalInitialized: false,
   
       })
-  
+      selectedDays = operationDays => {
+        this.setState({
+          operationDays,
+          indeterminate: !!operationDays.length && operationDays.length < operationDays.length,
+          checkAll: operationDays.length === this.state.day.length,
+        });
+        // console.log(operationDays)
+      };
     onSellectorPostion = (e) => {
       let pickUpLocation = { ...this.state.pickUpLocation }
       pickUpLocation.type = e
@@ -218,7 +229,7 @@ class EditCategory extends React.Component {
             <div>
               <h3> Select you Facilities </h3>
               <CheckboxGroup
-                options={this.state.plainOptions}
+                options={this.props.facility.facilityName}
                 value={this.state.facilities}
                 onChange={this.onCheck}
               />
@@ -233,10 +244,13 @@ class EditCategory extends React.Component {
               <Input placeholder="Enter your Phone" value={this.state.phone}
                 name="phone" allowClear onChange={this.onChange} />
             </div>
-            <div>
-              <h3>  operation Days </h3>
-              <Input placeholder="Enter your facility visit days" value={this.state.operationDays}
-                name="operationDays" allowClear onChange={this.onChange} />
+            <div style={{width:"300px"}}>
+            <h3> Select you days </h3>
+              <CheckboxGroup
+                options={this.state.day}
+                value={this.state.operationDays}
+                onChange={this.selectedDays}
+              />
             </div>
           </div>
           <div style={{
@@ -256,11 +270,14 @@ class EditCategory extends React.Component {
             </div>
 
           </div>
-          <div style={{ display: "flex" }}>
+          <div style={{ display: "flex",
+    "flexDirection": "column",
+    "alignItems": "center",
+    "marginLeft":"20%" }}>
             <div>
               <h3>  Select Location Type </h3>
-              <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-around" }}>
-                <Select style={{ width: "100px" }} onSelect={this.onSellectorPostion} name="type" defaultValue={this.state.pickUpLocation.type}>
+              <div style={{ justifyContent: "space-around" }}>
+                <Select style={{ width: "200px" }} onSelect={this.onSellectorPostion} name="type" defaultValue={this.state.pickUpLocation.type}>
                   <Option value="point">Point</Option>
                   <Option value="line">line</Option>
                 </Select>

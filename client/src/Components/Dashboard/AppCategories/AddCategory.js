@@ -3,11 +3,12 @@ import React from "react";
 import {
   Modal,
   Input,
-  Select, DatePicker
+  Select, DatePicker,Checkbox
 } from "antd";
 import {connect} from "react-redux"
 import {CreateFacilities} from "../../../Redux/Epics/facilities" 
 const { Option } = Select
+const CheckboxGroup = Checkbox.Group;
 
 class AddCategory extends React.Component {
   constructor(props) {
@@ -20,7 +21,9 @@ class AddCategory extends React.Component {
       sexType: "male",
       securityLevel: "low",
       securityvalues: ["low", "medium", "mar"],
-      visitationDays: "",
+      day: ['Monday', 'Tuesday', 'Wendsday', 'Thursday', "Friday", 'SatureDay', "Sunday"],
+      
+      visitationDays:[], 
       visitTime: "",
       requirementForVisitation: ""
     };
@@ -69,6 +72,14 @@ class AddCategory extends React.Component {
       sexType: e
     })
   }
+  selectedDays = visitationDays => {
+    this.setState({
+      visitationDays,
+      indeterminate: !!visitationDays.length && visitationDays.length < visitationDays.length,
+      checkAll: visitationDays.length === this.state.day.length,
+    });
+    // console.log(visitationDays)
+  };
   resetSate = () =>
     this.setState({
       name: "",
@@ -119,10 +130,13 @@ class AddCategory extends React.Component {
               <Input placeholder="Enter your Phone"
                 name="phone" allowClear onChange={this.onChange} />
             </div>
-            <div>
-              <h3>  visitation Days </h3>
-              <Input placeholder="Enter your facility visit days"
-                name="visitationDays" allowClear onChange={this.onChange} />
+            <div style={{width:"300px"}}>
+            <h3> Select you Visitation days </h3>
+              <CheckboxGroup
+                options={this.state.day}
+                value={this.state.visitationDays}
+                onChange={this.selectedDays}
+              />
             </div>
           </div>
           <div style={{

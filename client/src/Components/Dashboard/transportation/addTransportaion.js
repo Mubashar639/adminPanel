@@ -15,24 +15,27 @@ const CheckboxGroup = Checkbox.Group;
 class AddCategory extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       name: "",
       phone: "",
       facilities: [],
       ticketPrice: {
-        type: "aldult",
+        type: "adult",
         price: "",
       },
       operationDays: "",
       pickUpLocation: {
-        type: "",
+        type: "point",
         coordinates: [],
 
       },
-
+      day: ['Monday', 'Tuesday', 'Wendsday', 'Thursday', "Friday", 'SatureDay', "Sunday"],
+      
+      operationDays:[],     
       indeterminate: true,
       checkAll: false,
-      plainOptions: []
+      // plainOptions
     }
   }
   cancelHandler = () => {
@@ -53,12 +56,6 @@ class AddCategory extends React.Component {
     })
   };
 
-  componentDidMount() {
-    const plainOptions = this.props.facility && this.props.facility.facilities.map((facility) => facility.name)
-    this.setState({
-      plainOptions
-    })
-  }
 
   onChangeTime = (value, dateString) => {
     this.setState({ visitTime: value });
@@ -72,8 +69,9 @@ class AddCategory extends React.Component {
     this.setState({
       facilities,
       indeterminate: !!facilities.length && facilities.length < facilities.length,
-      checkAll: facilities.length === this.state.plainOptions.length,
+      checkAll: facilities.length === this.props.facility.facilityName.length,
     });
+    // console.log(facilities)
   };
 
   onOkHandler = () => {
@@ -101,6 +99,14 @@ class AddCategory extends React.Component {
       ticketPrice
     })
   }
+  selectedDays = operationDays => {
+    this.setState({
+      operationDays,
+      indeterminate: !!operationDays.length && operationDays.length < operationDays.length,
+      checkAll: operationDays.length === this.state.day.length,
+    });
+    console.log(operationDays)
+  };
   onChangePosition = (e) => {
     let pickUpLocation = { ...this.state.pickUpLocation }
     let longi, lati = ""
@@ -148,7 +154,7 @@ class AddCategory extends React.Component {
     })
   }
   render() {
-    console.log(this.state)
+
     return (
       <div>
         <Modal
@@ -170,9 +176,10 @@ class AddCategory extends React.Component {
                 allowClear onChange={this.onChange} />
             </div>
             <div>
+            
               <h3> Select you Facilities </h3>
               <CheckboxGroup
-                options={this.state.plainOptions}
+                options={this.props.facility.facilityName}
                 value={this.state.facilities}
                 onChange={this.onCheck}
               />
@@ -187,10 +194,13 @@ class AddCategory extends React.Component {
               <Input placeholder="Enter your Phone"
                 name="phone" allowClear onChange={this.onChange} />
             </div>
-            <div>
-              <h3>  operation Days </h3>
-              <Input placeholder="Enter your facility visit days"
-                name="operationDays" allowClear onChange={this.onChange} />
+            <div style={{width:"300px"}}>
+            <h3> Select you days </h3>
+              <CheckboxGroup
+                options={this.state.day}
+                value={this.state.operationDays}
+                onChange={this.selectedDays}
+              />
             </div>
           </div>
           <div style={{
@@ -201,7 +211,7 @@ class AddCategory extends React.Component {
             <div>
               <h3>  Select Age </h3>
               <div style={{ display: "flex", flexDirection: "row" }}>  <Select style={{ width: "200px" }} onSelect={this.onSellector} name="ticketPrice" defaultValue={this.state.ticketPrice.type}>
-                <Option value="adult">aldult</Option>
+                <Option value="adult">adult</Option>
                 <Option value="child">child</Option>
               </Select>
                 <Input placeholder="Enter Price" value={this.state.ticketPrice.price}
@@ -210,11 +220,14 @@ class AddCategory extends React.Component {
             </div>
 
           </div>
-          <div style={{ display: "flex" }}>
+          <div style={{ display: "flex",
+    "flexDirection": "column",
+    "alignItems": "center",
+    "marginLeft":"20%" }}>
             <div>
               <h3>  Select Location Type </h3>
-              <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-around" }}>
-                <Select style={{ width: "100px" }} onSelect={this.onSellectorPostion} name="type" defaultValue={this.state.pickUpLocation.type}>
+              <div >
+                <Select style={{ width: "200px" }} onSelect={this.onSellectorPostion} name="type" defaultValue={this.state.pickUpLocation.type}>
                   <Option value="point">Point</Option>
                   <Option value="line">line</Option>
                 </Select>
