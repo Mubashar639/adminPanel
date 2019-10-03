@@ -4,7 +4,8 @@ const Facility = (
   state = {
     isLoading: false,
     errMess: null,
-    user: null
+    user: null,
+    facilities:[]
   },
   action
 ) => {

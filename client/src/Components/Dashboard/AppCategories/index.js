@@ -6,7 +6,8 @@ import EditCategory from "./EditCategory";
 import {connect} from "react-redux"
 import {GetFacilities,DeleteFacilities} from "../../../Redux/Epics/facilities"
 // import { deleteFacility } from "../../../../../../android3/android/servers/order server/controllers/ficilityController";
-
+import {createStructuredSelector} from "reselect"
+import {FacilitySelector} from "../../../Redux/slector/facility"
 class AppCategories extends React.Component {
   constructor(props) {
     super(props);
@@ -49,9 +50,9 @@ componentDidMount(){
     // only update chart if the data has changed
     if (prevProps.facility !== this.props.facility) {
       this.setState({
-        facilities: this.props.facility.facilities,
-        filterfacilities:this.props.facility.facilities
-      }, () => console.log(this.state.transpors))
+        facilities: this.props.facility,
+        filterfacilities:this.props.facility
+      })
     }
   }
   onChangePrice = (e) => {
@@ -185,8 +186,8 @@ componentDidMount(){
     );
   }
 }
-const mapStateToProps = state => ({
-  facility: state.Facility
+const mapStateToProps = createStructuredSelector({
+  facility: FacilitySelector
 });
 // export default AppCategories;
 export default connect(mapStateToProps)(AppCategories);
