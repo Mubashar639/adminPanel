@@ -4,7 +4,8 @@ import Login from "./Reducers/Login";
 import Facility from "./Reducers/facility";
 import Transport from "./Reducers/transport";
 import Foods from "./Reducers/foods";
-import Order from "./Reducers/order"
+import Order from "./Reducers/order";
+import Category from "./Reducers/categoryReducer"
 
 
 
@@ -14,7 +15,8 @@ const store = createStore(
     Facility,
     Transport,
     Foods,
-    Order
+    Order,
+    Category
   }),
   applyMiddleware(thunk)
 );

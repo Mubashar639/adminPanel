@@ -9,12 +9,17 @@ import {
   Icon,
   Modal
 } from "antd";
+
 import Sidebar from "./Sidebar";
 import AppAccounts from "./foods";
 import AppCategories from "./AppCategories";
 import { AppsList } from "../../shared";
 import AppTheme from "./transportation";
 import AppFeatures from "./AppFeatures";
+import ProductCategories from "./ProductCategories"
+import { getCategories } from "./ProductCategories/Epics"
+import { get_category } from "../../Redux/Actions/authentication"
+import { connect } from "react-redux"
 
 class AppDetail extends React.Component {
   constructor(props) {
@@ -44,8 +49,9 @@ class AppDetail extends React.Component {
 
   componentDidMount() {
     const app = AppsList.find(app => app.appName === "Mobile App Admin Panal");
-    this.setState({
-      app
+
+    this.setState({ app, isLoading: true }, () => {
+      getCategories(data => this.setState({ isLoading: false }, () => this.props.getCate(data)));
     });
   }
 
@@ -59,6 +65,9 @@ class AppDetail extends React.Component {
     if (selectedKey === "appTheme") return <AppTheme app={app} />;
     if (selectedKey === "appFeatures") return <AppFeatures app={app} />;
     if (selectedKey === "appOrder") return <AppAccounts app={app} />;
+    if (selectedKey === "appCategory") return <ProductCategories app={app} />;
+
+
 
   };
 
@@ -120,5 +129,9 @@ class AppDetail extends React.Component {
   }
 }
 
-// const AppDetail = ()=><h1>App Detail</h1>
-export default AppDetail;
+
+const mapDispatchToProps = dispatch => ({
+  getCate: (value) => dispatch(get_category(value))
+})
+
+export default connect(null,mapDispatchToProps)(AppDetail);

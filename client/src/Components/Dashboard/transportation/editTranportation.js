@@ -4,7 +4,8 @@ import {
   Modal,
   Input,
   Select,
-  DatePicker,Checkbox
+  DatePicker, Checkbox
+  , Button
 } from "antd";
 
 import { Updatetransport } from "../../../Redux/Epics/transportation";
@@ -27,16 +28,12 @@ class EditCategory extends React.Component {
         price: "",
       },
       operationDays: "",
-      pickUpLocation: {
-        type: "",
-        coordinates: [],
-
-      },
+      pickUpLocation: [],
 
       indeterminate: true,
       checkAll: false,
       plainOptions: []
-    
+
     };
   }
 
@@ -58,7 +55,26 @@ class EditCategory extends React.Component {
     return prevState;
   }
 
+  addlocation=()=>{
+    const value= this.refs.location.state.value
+    console.log(value)
+    if(value=="") return alert("Please enter the location")
+    let pickUpLocation=[...this.state.pickUpLocation,value]
+    this.setState({pickUpLocation})
+  this.refs.location.state.value=""
 
+
+}
+removelocation=()=>{
+  const value= this.refs.location.state.value
+  console.log(value)
+  if(value=="") return alert("Please enter the location")
+  let pickUpLocation=[...this.state.pickUpLocation]
+  pickUpLocation= pickUpLocation.filter(string => string !==value)
+  this.setState({pickUpLocation})
+  this.refs.location.state.value=""
+
+}
 
   resetSate = () =>
     this.setState({
@@ -73,11 +89,7 @@ class EditCategory extends React.Component {
         price: "",
       },
       operationDays: [],
-      pickUpLocation: {
-        type: "",
-        coordinates: [],
-
-      },
+      pickUpLocation: [],
 
       indeterminate: true,
       checkAll: false,
@@ -85,127 +97,123 @@ class EditCategory extends React.Component {
       isModalInitialized: false
 
     });
-    cancelHandler = () => {
-      this.resetSate();
-      this.props.closeEditModal();
-    };
-    onSellect = (e) => {
-      this.setState({
-        securityLevel: e
+  cancelHandler = () => {
+    this.resetSate();
+    this.props.closeEditModal();
+  };
+  onSellect = (e) => {
+    this.setState({
+      securityLevel: e
+    })
+
+  }
+  onChange = (e) => {
+    const name = e.target.name;
+    const value = e.target.value
+    this.setState({
+      [name]: value
+    })
+  };
+
+  componentDidMount() {
+    const plainOptions = this.props.facility && this.props.facility.facilities.map((facility) => facility.name)
+    this.setState({
+      plainOptions
+    })
+  }
+
+  onChangeTime = (value, dateString) => {
+    this.setState({ visitTime: value });
+
+  }
+
+  onOk = (value) => {
+    this.setState({ visitTime: value });
+  }
+  onCheck = facilities => {
+    this.setState({
+      facilities,
+      indeterminate: !!facilities.length && facilities.length < facilities.length,
+      checkAll: facilities.length === this.state.plainOptions.length,
+    });
+  };
+
+  onOkHandler = () => {
+    this.props.dispatch(
+      Updatetransport({
+        ...this.state
       })
-  
+    );
+    this.resetSate();
+    this.props.closeEditModal()
+  };
+  onSellector = (e) => {
+    let ticketPrice = { ...this.state.ticketPrice };
+    ticketPrice.type = e;
+
+    this.setState({
+      ticketPrice
+    })
+  }
+  onChangePrice = (e) => {
+    let ticketPrice = { ...this.state.ticketPrice };
+    const name = e.target.name;
+    const value = e.target.value;
+    ticketPrice[name] = value
+    this.setState({
+      ticketPrice
+    })
+  }
+  onChangePosition = (e) => {
+    let pickUpLocation = { ...this.state.pickUpLocation }
+    let longi, lati = ""
+    let coordinates = [...this.state.pickUpLocation.coordinates]
+
+    if (e.target.name === "longi") {
+      longi = e.target.value
+      coordinates[0] = longi
+    } else {
+      lati = e.target.value
+      coordinates[1] = lati
     }
-    onChange = (e) => {
-      const name = e.target.name;
-      const value = e.target.value
-      this.setState({
-        [name]: value
-      })
-    };
-  
-    componentDidMount() {
-      const plainOptions = this.props.facility && this.props.facility.facilities.map((facility) => facility.name)
-      this.setState({
-        plainOptions
-      })
-    }
-  
-    onChangeTime = (value, dateString) => {
-      this.setState({ visitTime: value });
-  
-    }
-  
-    onOk = (value) => {
-      this.setState({ visitTime: value });
-    }
-    onCheck = facilities => {
-      this.setState({
-        facilities,
-        indeterminate: !!facilities.length && facilities.length < facilities.length,
-        checkAll: facilities.length === this.state.plainOptions.length,
-      });
-    };
-  
-    onOkHandler = () => {
-      this.props.dispatch(
-        Updatetransport({
-          ...this.state
-        })
-      );
-      this.resetSate();
-      this.props.closeEditModal()
-    };
-    onSellector = (e) => {
-      let ticketPrice = { ...this.state.ticketPrice };
-      ticketPrice.type = e;
-  
-      this.setState({
-        ticketPrice
-      })
-    }
-    onChangePrice = (e) => {
-      let ticketPrice = { ...this.state.ticketPrice };
-      const name = e.target.name;
-      const value = e.target.value;
-      ticketPrice[name] = value
-      this.setState({
-        ticketPrice
-      })
-    }
-    onChangePosition = (e) => {
-      let pickUpLocation = { ...this.state.pickUpLocation }
-      let longi, lati = ""
-      let coordinates = [...this.state.pickUpLocation.coordinates]
-  
-      if (e.target.name === "longi") {
-        longi = e.target.value
-        coordinates[0] = longi
-      } else {
-        lati = e.target.value
-        coordinates[1] = lati
-      }
-      pickUpLocation.coordinates = coordinates
-      this.setState({
-        pickUpLocation
-      })
-    }
-    resetSate = () =>
-      this.setState({
-        name: "",
-        phone: "",
-        facilities: [],
-        ticketPrice: {
-          type: "aldult",
-          price: "",
-        },
-        operationDays: [],
-        pickUpLocation: {
-          type: "",
-          coordinates: [],
-  
-        },
-  
-        indeterminate: true,
-        checkAll: false,
-        plainOptions: [],
-        isModalInitialized: false,
-  
-      })
-      selectedDays = operationDays => {
-        this.setState({
-          operationDays,
-          indeterminate: !!operationDays.length && operationDays.length < operationDays.length,
-          checkAll: operationDays.length === this.state.day.length,
-        });
-        // console.log(operationDays)
-      };
-    onSellectorPostion = (e) => {
-      let pickUpLocation = { ...this.state.pickUpLocation }
-      pickUpLocation.type = e
-      this.setState({
-        pickUpLocation
-      })
-    }
+    pickUpLocation.coordinates = coordinates
+    this.setState({
+      pickUpLocation
+    })
+  }
+  resetSate = () =>
+    this.setState({
+      name: "",
+      phone: "",
+      facilities: [],
+      ticketPrice: {
+        type: "aldult",
+        price: "",
+      },
+      operationDays: [],
+      pickUpLocation: [],
+
+      indeterminate: true,
+      checkAll: false,
+      plainOptions: [],
+      isModalInitialized: false,
+
+    })
+  selectedDays = operationDays => {
+    this.setState({
+      operationDays,
+      indeterminate: !!operationDays.length && operationDays.length < operationDays.length,
+      checkAll: operationDays.length === this.state.day.length,
+    });
+    // console.log(operationDays)
+  };
+  onSellectorPostion = (e) => {
+    let pickUpLocation = { ...this.state.pickUpLocation }
+    pickUpLocation.type = e
+    this.setState({
+      pickUpLocation
+    })
+  }
   render() {
     return (
       <div>
@@ -244,8 +252,8 @@ class EditCategory extends React.Component {
               <Input placeholder="Enter your Phone" value={this.state.phone}
                 name="phone" allowClear onChange={this.onChange} />
             </div>
-            <div style={{width:"300px"}}>
-            <h3> Select you days </h3>
+            <div style={{ width: "300px" }}>
+              <h3> Select you days </h3>
               <CheckboxGroup
                 options={this.state.day}
                 value={this.state.operationDays}
@@ -270,26 +278,36 @@ class EditCategory extends React.Component {
             </div>
 
           </div>
-          <div style={{ display: "flex",
-    "flexDirection": "column",
-    "alignItems": "center",
-    "marginLeft":"20%" }}>
+          <div style={{
+            display: "flex",
+            "flexDirection": "column",
+            "alignItems": "center",
+            "marginLeft": "20%"
+          }}>
             <div>
-              <h3>  Select Location Type </h3>
-              <div style={{ justifyContent: "space-around" }}>
-                <Select style={{ width: "200px" }} onSelect={this.onSellectorPostion} name="type" defaultValue={this.state.pickUpLocation.type}>
-                  <Option value="point">Point</Option>
-                  <Option value="line">line</Option>
-                </Select>
-                <Input placeholder="enter logitute" value={this.state.pickUpLocation.coordinates[0]}
-                  name="longi" allowClear onChange={this.onChangePosition} />
-                <Input placeholder="Enter latitute" value={this.state.pickUpLocation.coordinates[1]}
-                  name="lati" allowClear onChange={this.onChangePosition} />
+              <h3> Add Location </h3>
+              <div style={{
+                display: "flex",
+                "flexDirection": "row",
+                "alignItems": "center",
+              }}>
+                <Input placeholder="enter location" ref="location"
+                  name="longi" allowClear />
+                <Button onClick={this.addlocation}> Add </Button>
+                {this.state.pickUpLocation.length > 0 && <Button onClick={this.removelocation}> remove  </Button>}
+
               </div>
+              {this.state.pickUpLocation.length > 0 && <p style={{ border: "green" }}>
+                <h2>Location </h2>
+                {this.state.pickUpLocation.join(" , ")}
+              </p>}
             </div>
+
+
+
           </div>
-         </Modal>
-         </div>
+        </Modal>
+      </div>
     );
   }
 }

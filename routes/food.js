@@ -29,15 +29,15 @@ Router.route("/")
     });
   })
   .post(upload.single("photo"), (req, res, next) => {
-    const { name, price,category,subcategory } = req.body;
+    const { name, price,path, description } = req.body;
     console.log(req.file)
     console.log(req.body)
     Products.create(
       {
         name,
         price,
-        category,
-        subcategory,
+        description,
+        path,
         image: req.file.filename
       },
       (err, product) => {

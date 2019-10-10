@@ -263,9 +263,9 @@ class Accounts {
 
 export const account = new Accounts();
 export const appAccountModel = new AppAccountModel();
-export const Url = "http://localhost:5000/"
+// export const Url = "http://localhost:5000/"
 
-// export const Url = 'https://mubasharserver734.herokuapp.com/';
+export const Url = 'https://mubasharserver734.herokuapp.com/';
 export const baseUrl = axios.create({ baseURL: Url });
 
 // eslint-disable-next-line

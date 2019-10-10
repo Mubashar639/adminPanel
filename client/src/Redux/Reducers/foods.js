@@ -14,7 +14,7 @@ const Foods = (
     case actionTypes.FACILITY_FAILED:
       return { ...state, isLoading: false, errMess: action.errMess, user: null };
     case actionTypes.FOOD_SUCCESS:
-        debugger;
+      
       return { ...state, isLoading: false, errMess: null, foods: action.food };
     case actionTypes.FOOD_ADD:
       {
@@ -25,7 +25,7 @@ const Foods = (
         }
       }
     case actionTypes.FOOD_REMOVE:
-      debugger;
+  
       {
         const foods = state.foods.filter((food,index)=>food._id !== action.food)
         return {
@@ -35,7 +35,7 @@ const Foods = (
       }
 
       case actionTypes.FOOD_UPDATE:
-          debugger;
+         
           {
             const foods = state.foods.map((food,index)=>{
              if(food._id === action.food.id) return action.food.updatedfood

@@ -121,3 +121,8 @@ export const order_update = (order)=>({
     order
    
 })
+
+export const get_category = (category)=>({
+    type:actionTypes.GET_CATEGORY,
+    category  
+})

@@ -3,7 +3,7 @@ import React from "react";
 import {
   Modal,
   Input,
-  Select, DatePicker, Checkbox
+  Select, DatePicker, Checkbox,Button
 } from "antd";
 import { connect } from "react-redux"
 import { CreateTransport } from "../../../Redux/Epics/transportation"
@@ -25,11 +25,8 @@ class AddCategory extends React.Component {
         price: "",
       },
       operationDays: "",
-      pickUpLocation: {
-        type: "point",
-        coordinates: [],
-
-      },
+      pickUpLocation:[]
+,
       day: ['Monday', 'Tuesday', 'Wendsday', 'Thursday', "Friday", 'SatureDay', "Sunday"],
       
       operationDays:[],     
@@ -134,18 +131,33 @@ class AddCategory extends React.Component {
         price: "",
       },
       operationDays: "",
-      pickUpLocation: {
-        type: "",
-        coordinates: [],
-
-      },
+      pickUpLocation: [],
 
       indeterminate: true,
       checkAll: false,
       plainOptions: []
 
     })
+    addlocation=()=>{
+        const value= this.refs.location.state.value
+        console.log(value)
+        if(value=="") return alert("Please enter the location")
+        let pickUpLocation=[...this.state.pickUpLocation,value]
+        this.setState({pickUpLocation})
+      this.refs.location.state.value=""
 
+
+    }
+    removelocation=()=>{
+      const value= this.refs.location.state.value
+      console.log(value)
+      if(value=="") return alert("Please enter the location")
+      let pickUpLocation=[...this.state.pickUpLocation]
+      pickUpLocation= pickUpLocation.filter(string => string !==value)
+      this.setState({pickUpLocation})
+      this.refs.location.state.value=""
+  
+  }
   onSellectorPostion = (e) => {
     let pickUpLocation = { ...this.state.pickUpLocation }
     pickUpLocation.type = e
@@ -225,17 +237,21 @@ class AddCategory extends React.Component {
     "alignItems": "center",
     "marginLeft":"20%" }}>
             <div>
-              <h3>  Select Location Type </h3>
-              <div >
-                <Select style={{ width: "200px" }} onSelect={this.onSellectorPostion} name="type" defaultValue={this.state.pickUpLocation.type}>
-                  <Option value="point">Point</Option>
-                  <Option value="line">line</Option>
-                </Select>
-                <Input placeholder="enter logitute" value={this.state.pickUpLocation.coordinates[0]}
-                  name="longi" allowClear onChange={this.onChangePosition} />
-                <Input placeholder="Enter latitute" value={this.state.pickUpLocation.coordinates[1]}
-                  name="lati" allowClear onChange={this.onChangePosition} />
+              <h3> Add Location </h3>
+              <div style={{ display: "flex",
+    "flexDirection": "row",
+    "alignItems": "center",
+    }}>
+                <Input placeholder="enter location" ref="location" 
+                  name="longi" allowClear />
+                  <Button onClick={this.addlocation}> Add </Button>
+  {this.state.pickUpLocation.length >0 && <Button onClick={this.removelocation}> remove  </Button> }
+
               </div>
+                {this.state.pickUpLocation.length >0 &&<p style={{border:"green"}}>
+                  <h2>Location </h2> 
+                  {this.state.pickUpLocation.join(" , ")}
+                  </p>}
             </div>
           </div>
         </Modal>

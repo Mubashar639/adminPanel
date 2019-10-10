@@ -77,8 +77,7 @@ class AppCategories extends React.Component {
       title: "Pickup Location",
       render: (text, record) => (
         <span>
-          {console.log(record)}
-          {record.pickUpLocation.coordinates.map(value => <a > {value}  </a>)}
+          {record.pickUpLocation.map(value => <a > {value}  </a>)}
         </span>)
     },
     {

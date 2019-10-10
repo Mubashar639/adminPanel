@@ -20,6 +20,10 @@ const Sidebar = props =>(
       <Icon type="user" />
       <span className="nav-text"> Product </span>
     </Menu.Item>
+    <Menu.Item key="appCategory">
+      <Icon type="user" />
+      <span className="nav-text"> Category </span>
+    </Menu.Item>
     <Menu.Item key="appFeatures">
       <Icon type="ordered-list" />
       <span className="nav-text"> Order </span>

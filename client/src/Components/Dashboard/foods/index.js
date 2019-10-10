@@ -91,12 +91,21 @@ componentDidMount(){
     {
       key: "category",
       title: "Category",
-      dataIndex: "category"
+      render: (text, record) => (
+        <span>
+         { record.path[0].split("/")[1]}
+        </span>
+      ),
     },
     {
-      key: "category",
+      key: "subcategory",
       title: "Sub Category",
-      dataIndex: "subcategory"
+      // title: "Category",
+      render: (text, record) => (
+        <span>
+         { record.path[0].split("/")[2]}
+        </span>
+      ),
     },
     {
       title: 'Image',
@@ -124,7 +133,7 @@ componentDidMount(){
   ];
 // facilities
   render() {
-    console.log(this.props.food)
+    // console.log(this.props.food)
     return (
       <div>
         <Row>
